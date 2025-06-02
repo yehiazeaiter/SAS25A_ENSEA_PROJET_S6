@@ -29,6 +29,8 @@ This embedded systems project aimed to build a robot capable of playing a game o
 
 Despite not reaching the original goal, the project successfully integrates core embedded system concepts such as motor control, sensor interfacing, and interrupt-based signaling.
 
+![Project Prototype](images/prototype.png)
+
 ## Team Members
 
 - BELLAHBIB Amate-Allah 
