@@ -49,12 +49,8 @@ Despite not reaching the original goal, the project successfully integrates core
 | Maël         | Stepper motors testing, 3D modeling, GANTT diagram                                                      |
 | Yehia        | Ultrasonic sensor testing, DC and stepper motors testing, timer setup, SADT diagram, task distribution  |
 
-## How to use
-
-
 ## Folder structure
 - `project files/`: KiCad and STM32CubeIDE project files
-- `report.docx`: Final report
 - `guides/`: how to guides
 
 
