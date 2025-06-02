@@ -1,5 +1,4 @@
 # Guide to setup and use the ultrasonic sensor HC-SR04 with STM32CubeIDE
-![Ultrasonic sensor](https://github.com/user-attachments/assets/e8e98ddf-b7d6-4d03-a4e9-3f3115e92b43)
 
 ## What it is for
 This module is used to measure distances between 3 cm and 2 meters (otherwise it loses accuracy)
@@ -18,3 +17,20 @@ The ultrasonic transmitter sends periodic ultrasonic pulses of 10 μs period. Up
 
 ![Ultrasonic waves](https://github.com/user-attachments/assets/3416a6c6-576b-4ad3-bb4c-a6a48faab96d)
 *Image credit : teachwithict*
+
+## Pin setup
+- 5V pin should be connected to a 5V power supply (can be drawn from the STM)
+- Trigger pin should be connected to the STM in GPIO Output mode
+- Echo pin should be connected to the STM in GPIO Input mode
+- The GND pin should be connected to the GND node of the circuit
+
+## Visualization 
+In order to write the necessary STM code to correctly use this module, we have to understand what we should code precisely.
+There are mainly two things :
+- Pulse generation with the transmitter
+- Reading the echoed signal with the receiver
+
+
+
+## Pulse generation
+In order to generate pulses, we are going to use some STM timer 
