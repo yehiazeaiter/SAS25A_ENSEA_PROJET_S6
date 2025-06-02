@@ -53,11 +53,11 @@ Despite not reaching the original goal, the project successfully integrates core
 
 
 ## Folder structure
-- `STM_Project/`: STM32CubeIDE project files
+- `project files/`: KiCad and STM32CubeIDE project files
 - `report.docx`: Final report
 - `guides/`: how to guides
 
-## Documentation
+
 
 
 
