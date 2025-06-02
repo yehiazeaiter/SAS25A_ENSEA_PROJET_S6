@@ -1,3 +1,5 @@
+![Project Poster](images/poster.jpg)
+
 # SAS25A_ENSEA_PROJET_S6
 
 This repository contains the code and documentation for our first year school project. An embedded systems project using STM32CubeIDE to build a robot that plays hide and seek in a labyrinth using motors for moving, an ultrasonic sensor for obstacle detection, and an infrared sensor for detecting the other playing robot.
