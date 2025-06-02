@@ -1,4 +1,4 @@
-![Project Poster](images/poster.jpg)
+![Project Poster](images/poster.png)
 
 # SAS25A_ENSEA_PROJET_S6
 
