@@ -2,7 +2,7 @@
 
 This repository contains the code and documentation for our first year school project. An embedded systems project using STM32CubeIDE to build a robot that plays hide and seek in a labyrinth using motors for moving, an ultrasonic sensor for obstacle detection, and an infrared sensor for detecting the other playing robot.
 
-## 📚 Table of Contents
+## Table of Contents
 - [Project Overview](#project-overview)
 - [Team Members](#team-members)
 - [How to Use](#how-to-use)
@@ -10,24 +10,24 @@ This repository contains the code and documentation for our first year school pr
 - [Documentation](#documentation)
 
 
-## 🔍 Project Overview
+## Project Overview
 
 This embedded systems project aimed to build a robot capable of playing a game of hide-and-seek using sensors and motor control, based on the STM32L476RG microcontroller, in a compact design with an integrated PCB.
 
-### 🔧 What We Achieved
+### What We Achieved
 - The robot can **move forward** using DC motors
 - It **stops automatically** when an obstacle is detected via the ultrasonic sensor
 - It **blinks an LED** when receiving a signal from the infrared receiver
 - A PCB design ready to print
 
-### ❌ What Was Not Fully Implemented
+### What Was Not Fully Implemented
 - Autonomous hide-and-seek behavior
 - Navigation or decision-making logic
 - Compact design with an integrated PCB
 
 Despite not reaching the original goal, the project successfully integrates core embedded system concepts such as motor control, sensor interfacing, and interrupt-based signaling.
 
-## 👥 Team Members
+## Team Members
 
 - BELLAHBIB Amate-Allah 
 - EL MESTARI Mohamed-Amine 
@@ -35,7 +35,7 @@ Despite not reaching the original goal, the project successfully integrates core
 - PERRIN Maël 
 - ZEAITER Yehia 
 
-### 🛠️ Contributions
+### Contributions
 
 | Member       | Contributions Summary                                                                                   |                    
 |--------------|---------------------------------------------------------------------------------------------------------|
@@ -53,7 +53,7 @@ Despite not reaching the original goal, the project successfully integrates core
 - `report.docx`: Final report
 - `guides/`: how to guides
 
-## 📄 Documentation
+## Documentation
 
 
 
