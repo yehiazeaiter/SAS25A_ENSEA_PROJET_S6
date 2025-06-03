@@ -42,7 +42,7 @@ In the following two sections, we'll see how to do the right setup to finally ca
 ## Pin setup
 - 5V pin should be connected to a 5V power supply (can be drawn from the STM)
 - Trigger pin should be connected to the STM in GPIO Output mode
-- Echo pin should be connected to the STM in GPIO Input mode
+- Echo pin should be connected to the STM in GPIO_EXTI mode (will be explained later)
 - The GND pin should be connected to the GND node of the circuit
 
 ## Pulse generation
@@ -70,4 +70,14 @@ During the first one of these intervals, we want the signal sent to the Trigger 
 
 What's left is to start the timer after its initialization in the main.c file, you simply write HAL_TIM_Base_Start_IT(&htim2); in the USER BEGIN CODE 2 section of the main function.
 
-If you visualise the output of the Trigger pin on an oscilloscope, you would see something like the following : 
+You can visualise the output of the Trigger pin on the oscilloscope to verify that the pulse generation is correct.
+
+## Distance calculation
+The distance calculation is done through the measuring of the time interval between sending the ultrasonic signal and receiving it back. Once the sonic burst is launched from the module, the Echo pin goes to HIGH state, and once it receives the signal back, it goes back to LOW state, as visualised before.
+So in order to calculate the distance, we have to detect this HIGH level using our microcontroller. A simple yet effective way to do it, is to detect the rising edge of the signal, and its following edge, and calculating the time between them.
+Fortunately, the ST microcontroller comes with edge detection features. We mentioned earlier that the Echo pin should be configured in EXTI mode, this is because this mode allows the pin to do interruptions when certain events occur, EXTI actually stands for "external interrupt". In our case, we want interrupts to happen when a rising or a falling edge is detected, in order to check time on each of these instances. 
+For our example, we configure the ECHO pin in GPIO_EXTI1 mode. Now we should configure the EXTI behavior. 
+Go to the ioc file, Pinout&Confiration -> System Core -> GPIO and select the EXTI pin, select the External Interrupt with Rising/Falling edge triger detection option, make sure that the GPIO Pull-up/Pull-down is set to no.
+![echo pin](https://github.com/user-attachments/assets/dca3ca98-1e40-4dc7-b256-9bc57a63ea05)
+*screenshot of the GPIO settings*
+
