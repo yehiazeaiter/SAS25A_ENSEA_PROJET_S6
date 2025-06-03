@@ -74,6 +74,29 @@ During the first one of these intervals, we want the signal sent to the Trigger 
 
 ![trigger code](https://github.com/user-attachments/assets/328073a6-7e4d-4a1b-a27c-e0808ffccc25)
 
+<pre lang="markdown"> ```c #include <stdio.h> 
+  void TIM2_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM2_IRQn 0 */
+	if (trigger_counter == Trigger_Period - 1){               // Trigger_Period = 20000
+			HAL_GPIO_WritePin(Trigger_Port, Trigger_PIN, SET);
+	}
+	else if (trigger_counter == Trigger_Period){
+		HAL_GPIO_WritePin(Trigger_Port, Trigger_PIN, RESET);
+		trigger_counter = 0;
+	}
+
+	trigger_counter += 1;
+
+  /* USER CODE END TIM2_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim2);
+  /* USER CODE BEGIN TIM2_IRQn 1 */
+
+  /* USER CODE END TIM2_IRQn 1 */
+}
+  ``` </pre>
+
+
 What's left is to start the timer after its initialization in the main.c file, you simply write HAL_TIM_Base_Start_IT(&htim2); in the USER BEGIN CODE 2 section of the main function.
 
 You can visualise the output of the Trigger pin on the oscilloscope to verify that the pulse generation is correct.
