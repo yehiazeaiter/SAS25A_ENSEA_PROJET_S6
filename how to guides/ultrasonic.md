@@ -30,6 +30,12 @@ There are mainly two things :
 - Pulse generation with the transmitter
 - Reading the echoed signal with the receiver
 
+The pulses look like the following : 
+
+![pulses](https://github.com/user-attachments/assets/511df6e9-b71c-4fbb-ab73-984523617b45)
+
+
+![zoomed in pulse](https://github.com/user-attachments/assets/cc9aac7f-dd7e-4d8a-acdd-ba5c342f21de)
 
 
 ## Pulse generation
