@@ -101,7 +101,7 @@ You can visualise the output of the Trigger pin on the oscilloscope to verify th
 
 ## Distance calculation
 The distance calculation is done through the measuring of the time interval between sending the ultrasonic signal and receiving it back. Once the sonic burst is launched from the module, the Echo pin goes to HIGH state, and once it receives the signal back, it goes back to LOW state, as visualised before.
-So in order to calculate the distance, we have to detect this HIGH level using our microcontroller. A simple yet effective way to do it, is to detect the rising edge of the signal, and its following edge, and calculating the time between them.
+So in order to calculate the distance, we have to detect this HIGH level using our microcontroller. A simple yet effective way to do it, is to detect the rising edge of the signal, and its falling edge, and calculating the time between them.
 Fortunately, the ST microcontroller comes with edge detection features. We mentioned earlier that the Echo pin should be configured in EXTI mode, this is because this mode allows the pin to do interruptions when certain events occur, EXTI actually stands for "external interrupt". In our case, we want interrupts to happen when a rising or a falling edge is detected, in order to check time on each of these instances. 
 For our example, we configure the ECHO pin in GPIO_EXTI1 mode. Now we should configure the EXTI behavior. 
 Go to the ioc file, Pinout&Confiration -> System Core -> GPIO and select the EXTI pin, select the External Interrupt with Rising/Falling edge triger detection option, make sure that the GPIO Pull-up/Pull-down is set to no.
@@ -117,7 +117,7 @@ For our example, we set TIM1 with a high ARR value for high precision, and to ha
 ![timer echo](https://github.com/user-attachments/assets/120d7b76-ebc2-4015-bcf2-bb69d7b8d7e2)
 
 Now we get to coding, we create two functions, one for handling the rising edge, it simply tracks the moment the rising edge occured, and the other function is for handling the falling edge, it tracks the moment the falling edge occured and it calculates the distance. 
-You might have already figured out that the use of the timer can cause the second time to be lower than the first time because of the timer resets, that's why we use the ternary expression displayed in the code, it corrects the time shift. The high ARR value assures that the start time won't be shifted by more than one period.
+You might have already figured out that the use of the timer can cause the second time to be lower than the first time because of the timer reset, that's why we use the ternary expression displayed in the code, it corrects the time shift. The high ARR value assures that the start time won't need to be shifted by more than one period.
 
 ```c
 uint32_t time_start = 0;
@@ -145,7 +145,7 @@ void handle_falling_edge(void)
 }
 ```
 
-Finally these functions should be called upon interruptions, in the stm32*_it.c file, call them in the EXTI Callback function (you may need to define this function by yourself), according to the signal state.
+Finally these functions should be called upon interruptions, in the `stm32*_it.c` or the `main.c` file, call them in the EXTI Callback function (you may need to define this function by yourself), according to the signal state.
 
 ```c
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
