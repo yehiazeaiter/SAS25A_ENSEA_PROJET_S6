@@ -16,6 +16,7 @@ The HC-SR04 ultrasonic module is equiped with two main parts, an ultrasonic tran
 The ultrasonic transmitter sends periodic ultrasonic pulses of 10 μs period. Upon detecting an object, these waves are reflected towards the receiver. Therefore, the time it takes for these waves to travel to the object forth and back is used to calculate the distance.
 
 ![Ultrasonic waves](https://github.com/user-attachments/assets/3416a6c6-576b-4ad3-bb4c-a6a48faab96d)
+
 *Image credit : teachwithict*
 
 ## Visualization 
@@ -33,6 +34,7 @@ an 8 cycle burst of ultrasound at 40 kHz and raise its echo. The pulses sent to 
 ![zoomed in pulse](https://github.com/user-attachments/assets/cc9aac7f-dd7e-4d8a-acdd-ba5c342f21de)
 
 The signal read on the Echo pin looks like the following :
+
 ![echo](https://github.com/user-attachments/assets/f475e4fb-b772-4252-b148-7041a16098b0)
 
 In fact, the Echo signal stays on HIGH level until it receives the ultrasonic wave echo. Therefore, in order to calculate distance with its input, we should calculate the distance an ultrasonic wave travels during the time where it stays high, divided by two, because the wave travels the distance to the object back and fourth.
@@ -61,6 +63,7 @@ To generate these pulses, we will set a timer that creates interrupts every 10 �
 *Screenshot of the timer TIM2 settings*
 
 After setting up the timer, we should enable its interrupts, in the ioc file you go to Pinout&Confiration -> System Core -> NVIC and you check the TIM2 global interrupt box :
+
 ![image](https://github.com/user-attachments/assets/a1ecd778-a6c3-46a9-9f9b-b928a4c07fb6)
 
 *Screenshot of the NVIC settings*
@@ -68,6 +71,7 @@ After setting up the timer, we should enable its interrupts, in the ioc file you
 Now that the timer is set up, we can start generating the pulses, a pulse is simply a high level between two interruptions, every 200 ms. 
 Therefore, the code is very simple, in the stm32*_it.c file (stm32l4xx_it.c in our example), you should find a function with the void TIM2_IRQHandler(void) prototype, this function is called every time the timer creates an interrupt, therefore every 10 μs. In 200 ms, there are 20.000 intervals of 10 μs width, that's why we define a constant called Trigger_Period = 20000.
 During the first one of these intervals, we want the signal sent to the Trigger pin to be set as HIGH, during the remaining intervals, we want it set to low, therefore comes the following code : 
+
 ![trigger code](https://github.com/user-attachments/assets/328073a6-7e4d-4a1b-a27c-e0808ffccc25)
 
 What's left is to start the timer after its initialization in the main.c file, you simply write HAL_TIM_Base_Start_IT(&htim2); in the USER BEGIN CODE 2 section of the main function.
@@ -80,6 +84,7 @@ So in order to calculate the distance, we have to detect this HIGH level using o
 Fortunately, the ST microcontroller comes with edge detection features. We mentioned earlier that the Echo pin should be configured in EXTI mode, this is because this mode allows the pin to do interruptions when certain events occur, EXTI actually stands for "external interrupt". In our case, we want interrupts to happen when a rising or a falling edge is detected, in order to check time on each of these instances. 
 For our example, we configure the ECHO pin in GPIO_EXTI1 mode. Now we should configure the EXTI behavior. 
 Go to the ioc file, Pinout&Confiration -> System Core -> GPIO and select the EXTI pin, select the External Interrupt with Rising/Falling edge triger detection option, make sure that the GPIO Pull-up/Pull-down is set to no.
+
 ![echo pin](https://github.com/user-attachments/assets/dca3ca98-1e40-4dc7-b256-9bc57a63ea05)
 
 *Screenshot of the GPIO settings*
@@ -87,15 +92,18 @@ Go to the ioc file, Pinout&Confiration -> System Core -> GPIO and select the EXT
 For measuring time, the calssic HAL_GetTick() function won't work in our case, because it has a precision of 1 ms, and sounds travel around 35 cm in 1 ms! So it will generate a great imprecision when calculating distances.
 Instead, we'll set up a timer for getting the exact time on two instants : rising edge and falling edge.
 For our example, we set TIM1 with a high ARR value for high precision, and to have a time interval large enough to cover distances around 20 m, here is our configuration :
+
 ![timer echo](https://github.com/user-attachments/assets/120d7b76-ebc2-4015-bcf2-bb69d7b8d7e2)
 
 Now we get to coding, we create two functions, one for handling the rising edge, it simply tracks the moment the rising edge occured, and the other function is for handling the falling edge, it tracks the moment the falling edge occured and it calculates the distance. 
 You might have already figured out that the use of the timer can cause the second time to be lower than the first time because of the timer resets, that's why we use the ternary expression displayed in the code, it corrects the time shift. The high ARR value assures that the start time won't be shifted by more than one period.
+
 ![code echo](https://github.com/user-attachments/assets/69d784ed-74cd-44bb-acb4-ac54909b2b74)
 
 *Screenshot of the two functions*
 
 Finally these functions should be called upon interruptions, in the stm32*_it.c file, call them in the EXTI Callback function, according to the signal state.
+
 ![image](https://github.com/user-attachments/assets/fe0e74cc-01ac-4fe4-b62a-60d9fb42c2b6)
 
 *Screenshot of the EXTI callback function*
