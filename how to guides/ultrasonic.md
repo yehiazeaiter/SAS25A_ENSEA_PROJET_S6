@@ -74,7 +74,7 @@ During the first one of these intervals, we want the signal sent to the Trigger 
 
 ![trigger code](https://github.com/user-attachments/assets/328073a6-7e4d-4a1b-a27c-e0808ffccc25)
 
-<pre lang="markdown"> ```c #include <stdio.h> 
+<pre lang="markdown">
   void TIM2_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM2_IRQn 0 */
@@ -94,7 +94,7 @@ During the first one of these intervals, we want the signal sent to the Trigger 
 
   /* USER CODE END TIM2_IRQn 1 */
 }
-  ``` </pre>
+ </pre>
 
 
 What's left is to start the timer after its initialization in the main.c file, you simply write HAL_TIM_Base_Start_IT(&htim2); in the USER BEGIN CODE 2 section of the main function.
