@@ -69,7 +69,7 @@ After setting up the timer, we should enable its interrupts, in the ioc file you
 *Screenshot of the NVIC settings*
 
 Now that the timer is set up, we can start generating the pulses, a pulse is simply a high level between two interruptions, every 200 ms. 
-Therefore, the code is very simple, in the stm32*_it.c file (stm32l4xx_it.c in our example), you should find a function with the void TIM2_IRQHandler(void) prototype, this function is called every time the timer creates an interrupt, therefore every 10 μs. In 200 ms, there are 20.000 intervals of 10 μs width, that's why we define a constant called Trigger_Period = 20000.
+Therefore, the code is very simple, in the stm32*_it.c file (stm32l4xx_it.c in our example), you should find a function with the `void TIM2_IRQHandler(void)` prototype, this function is called every time the timer creates an interrupt, therefore every 10 μs. In 200 ms, there are 20.000 intervals of 10 μs width, that's why we define a constant called Trigger_Period = 20000.
 During the first one of these intervals, we want the signal sent to the Trigger pin to be set as HIGH, during the remaining intervals, we want it set to low, therefore comes the following code : 
 
 ```c
@@ -110,7 +110,7 @@ Go to the ioc file, Pinout&Confiration -> System Core -> GPIO and select the EXT
 
 *Screenshot of the GPIO settings*
 
-For measuring time, the calssic HAL_GetTick() function won't work in our case, because it has a precision of 1 ms, and sounds travel around 35 cm in 1 ms! So it will generate a great imprecision when calculating distances.
+For measuring time, the calssic `HAL_GetTick()` function won't do the trick in our case, because it has a precision of 1 ms, and sounds travel around 35 cm in 1 ms! So it will generate a great imprecision when calculating distances.
 Instead, we'll set up a timer for getting the exact time on two instants : rising edge and falling edge.
 For our example, we set TIM1 with a high ARR value for high precision, and to have a time interval large enough to cover distances around 20 m, here is our configuration :
 
@@ -167,7 +167,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 ```
 
 ## Use 
-As you may have noticed, the constantly update variable "distance_cm" is declared as global, therefore you can use it anywhere in the project, you should simply call it in the .c file you're going to use it in, by typing "extern float distance_cm;"
+As you may have noticed, the constantly update variable "distance_cm" is declared as global, therefore you can use it anywhere in the project, you should simply call it in the .c file you're going to use it in, by typing `extern float distance_cm;` .
 
 I suggest you try to apply that by writing a simple code that makes a LED light up when an object is detected at 10 cm.
 Otherwise you can try to print the constantly updated values of the distance in a terminal.
