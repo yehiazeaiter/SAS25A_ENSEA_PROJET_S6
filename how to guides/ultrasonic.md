@@ -18,12 +18,6 @@ The ultrasonic transmitter sends periodic ultrasonic pulses of 10 μs period. Up
 ![Ultrasonic waves](https://github.com/user-attachments/assets/3416a6c6-576b-4ad3-bb4c-a6a48faab96d)
 *Image credit : teachwithict*
 
-## Pin setup
-- 5V pin should be connected to a 5V power supply (can be drawn from the STM)
-- Trigger pin should be connected to the STM in GPIO Output mode
-- Echo pin should be connected to the STM in GPIO Input mode
-- The GND pin should be connected to the GND node of the circuit
-
 ## Visualization 
 In order to write the necessary STM code to correctly use this module, we have to understand what we should code precisely.
 There are mainly two things :
@@ -37,6 +31,18 @@ The pulses look like the following :
 
 ![zoomed in pulse](https://github.com/user-attachments/assets/cc9aac7f-dd7e-4d8a-acdd-ba5c342f21de)
 
+The signal read on the Echo pin looks like the following :
+![echo](https://github.com/user-attachments/assets/f475e4fb-b772-4252-b148-7041a16098b0)
+
+In fact, the Echo signal stays on HIGH level until it receives the ultrasonic wave echo. Therefore, in order to calculate distance with its input, we should calculate the distance an ultrasonic wave travels during the time where it stays high, divided by two, because the wave travels the distance to the object back and fourth.
+
+In the following two sections, we'll see how to do the right setup to finally calculate distance.
+
+## Pin setup
+- 5V pin should be connected to a 5V power supply (can be drawn from the STM)
+- Trigger pin should be connected to the STM in GPIO Output mode
+- Echo pin should be connected to the STM in GPIO Input mode
+- The GND pin should be connected to the GND node of the circuit
 
 ## Pulse generation
 In order to generate pulses, we are going to use some STM timer 
