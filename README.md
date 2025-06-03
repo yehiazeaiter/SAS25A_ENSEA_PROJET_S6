@@ -49,7 +49,7 @@ Despite not reaching the original goal, the project successfully integrates core
 
 ## Folder structure
 - `project files/`: KiCad and STM32CubeIDE project files
-- `guides/`: how to guides
+- `how to guides/`: guides on how to achieve the different tasks done in the project
 
 
 
