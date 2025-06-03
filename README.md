@@ -7,9 +7,7 @@ This repository contains the code and documentation for our first year school pr
 ## Table of Contents
 - [Project Overview](#project-overview)
 - [Team Members](#team-members)
-- [How to Use](#how-to-use)
 - [Folder Structure](#folder-structure)
-- [Documentation](#documentation)
 
 
 ## Project Overview
