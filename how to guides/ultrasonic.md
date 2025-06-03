@@ -72,8 +72,6 @@ Now that the timer is set up, we can start generating the pulses, a pulse is sim
 Therefore, the code is very simple, in the stm32*_it.c file (stm32l4xx_it.c in our example), you should find a function with the void TIM2_IRQHandler(void) prototype, this function is called every time the timer creates an interrupt, therefore every 10 μs. In 200 ms, there are 20.000 intervals of 10 μs width, that's why we define a constant called Trigger_Period = 20000.
 During the first one of these intervals, we want the signal sent to the Trigger pin to be set as HIGH, during the remaining intervals, we want it set to low, therefore comes the following code : 
 
-![trigger code](https://github.com/user-attachments/assets/328073a6-7e4d-4a1b-a27c-e0808ffccc25)
-
 ```c
   void TIM2_IRQHandler(void)
 {
@@ -121,15 +119,52 @@ For our example, we set TIM1 with a high ARR value for high precision, and to ha
 Now we get to coding, we create two functions, one for handling the rising edge, it simply tracks the moment the rising edge occured, and the other function is for handling the falling edge, it tracks the moment the falling edge occured and it calculates the distance. 
 You might have already figured out that the use of the timer can cause the second time to be lower than the first time because of the timer resets, that's why we use the ternary expression displayed in the code, it corrects the time shift. The high ARR value assures that the start time won't be shifted by more than one period.
 
-![code echo](https://github.com/user-attachments/assets/69d784ed-74cd-44bb-acb4-ac54909b2b74)
+```c
+uint32_t time_start = 0;
+uint32_t time_end = 0;
+float distance_cm = 0.0f;
+extern TIM_HandleTypeDef htim1;
 
-*Screenshot of the two functions*
 
-Finally these functions should be called upon interruptions, in the stm32*_it.c file, call them in the EXTI Callback function, according to the signal state.
+// to track instants, we use the counting of timer 1
+void handle_rising_edge(void)
+{
+    time_start = __HAL_TIM_GET_COUNTER(&htim1);   // tracking of the instant of the rising edge
+}
 
-![image](https://github.com/user-attachments/assets/fe0e74cc-01ac-4fe4-b62a-60d9fb42c2b6)
+void handle_falling_edge(void)
+{
+    time_end = __HAL_TIM_GET_COUNTER(&htim1);    // tracking of the instant of the falling edge
 
-*Screenshot of the EXTI callback function*
+    uint32_t duration = (time_end >= time_start) ?
+                        (time_end - time_start) :
+                        ((0xFFFF - time_start) + time_end);  // the ternary expression assuring the right time calculation
+    // speed of an ultrasonic wave in the air ≈ 343 m/s = 0.0343 cm/µs
+    // the wave travels the distance back and forth - division by 2
+    distance_cm = ((float)duration * 0.0343f) / 2.0f;
+}
+```
+
+Finally these functions should be called upon interruptions, in the stm32*_it.c file, call them in the EXTI Callback function (you may need to define this function by yourself), according to the signal state.
+
+```c
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+	 if (GPIO_Pin == Echo_PIN)
+	    {
+	        if (HAL_GPIO_ReadPin(Echo_Port, Echo_PIN) == GPIO_PIN_SET)
+	        {
+	            handle_rising_edge();
+
+	        }
+
+	        else
+	        {
+	            handle_falling_edge();
+	        }
+	    }
+
+}
+```
 
 ## Use 
 As you may have noticed, the constantly update variable "distance_cm" is declared as global, therefore you can use it anywhere in the project, you should simply call it in the .c file you're going to use it in, by typing "extern float distance_cm;"
